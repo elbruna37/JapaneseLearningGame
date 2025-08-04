@@ -1,20 +1,23 @@
 using System.Collections;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
+    public static GameManager Instance;
 
     bool pagesPass = false;
     bool hasStarted = false;
 
+    public int life = 10;
+
 
     void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(gameObject);
         }
         else
@@ -33,7 +36,6 @@ public class GameManager : MonoBehaviour
             StartCoroutine(WaitToPaint());
         }
     }
-
     public void LoadNextScene()
     {
         // Cargar la siguiente escena en el build settings

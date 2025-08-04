@@ -7,6 +7,11 @@ using UnityEngine.UI;
 
 public class HUDManager : MonoBehaviour
 {
+    public static HUDManager Instance;
+
+    public GameObject LifeHUD;
+    [SerializeField] private TextMeshProUGUI lifeText;
+
     public GameObject LeftPageCanvas;
     public GameObject RightPageCanvas;
 
@@ -17,21 +22,41 @@ public class HUDManager : MonoBehaviour
     private Vector4 originalPadding = new Vector4(0, 0, 1.1f, 0);
 
     bool pasar_pagina;
+    bool pasar_varias;
     bool hasWrited = false;
     bool readyMenu = false;
 
     public GameObject Turorial;
     public GameObject MainMenu;
 
-    
+    private void Awake()
+    {
+        Instance = this;
+        UpdateLifeDisplay();
+    }
+
     void Update()
     {
         pasar_pagina = AnimatorController.Instance.GetAnimatorBool("pasar_pagina");
+        pasar_varias = AnimatorController.Instance.GetAnimatorBool("pasar_varias");
 
         if (pasar_pagina && !hasWrited)
         {
             hasWrited = true;
             StartCoroutine(ReducePaddingAfterDelay(masksMainMenu , 2.5f, 1.2f));
+        }
+
+        if (pasar_varias)
+        {
+            LifeHUD.SetActive(true);
+        }
+    }
+
+    public void UpdateLifeDisplay()
+    {
+        if (lifeText != null)
+        {
+            lifeText.text = GameManager.Instance.life.ToString();
         }
     }
 

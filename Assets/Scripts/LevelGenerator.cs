@@ -1,17 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using System.Xml;
-using System.IO;
-using System.Xml.Linq;
-using System.Linq;
-using System;
 
 
 public class LevelGenerator : MonoBehaviour
 {
+    public GameManager gameManager;
+
     XElement xmlDoc;
     //bool finishedXMLLoading = false;
 
@@ -42,6 +45,17 @@ public class LevelGenerator : MonoBehaviour
     bool hasStarted = false;
 
     int tutorialRound = 0;
+    int repeatCount = 0;
+
+    //Answer method variables
+    public GameObject answerContainer;
+    private List<string> currentOptions = new List<string>();
+
+    private float originalSize;
+
+    private bool hasAnswered = false;
+    private string correctAnswer = "";
+
 
     void Start()
     {
@@ -55,6 +69,7 @@ public class LevelGenerator : MonoBehaviour
         {
             hasStarted = true;
             TutorialHiraganaRandom();
+            UpdateAnswersUI();
         }
     }
     void XMLloader()
@@ -68,6 +83,7 @@ public class LevelGenerator : MonoBehaviour
 
     void TutorialHiraganaRandom()
     {
+
         switch (tutorialRound)
         {
             case 0 : 
@@ -143,6 +159,8 @@ public class LevelGenerator : MonoBehaviour
 
         nStrokes = StrokeFinder(stringHiraganaRandom);
         nletter = LetterFinder(stringHiraganaRandom);
+
+        correctAnswer = nletter;
 
         StartCoroutine(ImageLoads(stringHiraganaRandom, nStrokes, nletter));
     }
@@ -257,6 +275,164 @@ public class LevelGenerator : MonoBehaviour
             
         }
     }
+
+
+
+
+    void UpdateAnswersUI()
+    {
+        currentOptions.Clear();
+        hasAnswered = false;
+
+        // Obtener índices válidos para este tutorialRound
+        List<int> validIndices = GetValidIndicesForRound(tutorialRound);
+
+
+        if (validIndices.Count < 5)
+        {
+            Debug.LogError("Se necesitan exactamente 5 respuestas para este round.");
+            return;
+        }
+
+        // Convertir a letras usando LetterFinder
+        foreach (int index in validIndices)
+        {
+            string letter = LetterFinder(index.ToString());
+            currentOptions.Add(letter);
+        }
+
+        
+
+        // Asignar letras a los botones
+        for (int i = 0; i < 5; i++)
+        {
+            Transform answerButton = answerContainer.transform.GetChild(i);
+
+            // Asignar el texto
+            TextMeshProUGUI tmp = answerButton.GetComponentInChildren<TextMeshProUGUI>();
+            tmp.text = currentOptions[i];
+
+            // Reset color
+            Image img = answerButton.GetComponent<Image>();
+            img.color = Color.white;
+
+            // Asignar evento de click
+            Button btn = answerButton.GetComponent<Button>();
+            btn.onClick.RemoveAllListeners(); // limpiar listeners previos
+            int index = i; // evitar error de closure
+            btn.onClick.AddListener(() => CheckAnswer(index));
+
+        }
+
+        Debug.Log("Botones configurados. Correcta: " + correctAnswer);
+    }
+
+    List<int> GetValidIndicesForRound(int round)
+    {
+        switch (round)
+        {
+            case 0: return new List<int> { 66, 67, 68, 69, 70 }; // a, e ,i , o , u
+            case 1: return new List<int> { 0, 2, 1, 4, 3 };       // か, き, く, け, こ
+            case 2: return new List<int> { 0, 1, 2, 3, 4 };       // ka-group sin dakuten
+            case 3: return new List<int> { 5, 6, 7, 8, 9 };       // さ-group
+            case 4: return new List<int> { 5, 6, 7, 8, 9 };       // さ, し, す, せ, そ
+            case 5: return new List<int> { 10, 11, 12, 13, 14 };  // た-group
+            case 6: return new List<int> { 10, 11, 12, 13, 14 };  // た, ち, つ, て, と
+            case 7: return new List<int> { 15, 16, 17, 18, 19 };  // は-group
+            case 8: return new List<int> { 15, 16, 17, 18, 19 };  // は, ひ, ふ, へ, ほ
+            case 9: return new List<int> { 20, 21, 22, 23, 24 };  // な-group
+            case 10: return new List<int> { 25, 26, 27, 28, 29 }; // ま-group
+            case 11: return new List<int> { 30, 31, 32, 33, 34 }; // ら-group
+            case 12: return new List<int> { 60, 61, 62, 63, 65 }; // わ, を, ん, や, よ
+            case 13: return new List<int> { 0, 1, 2, 3, 4 };       // Ejemplo para "todo" → los primeros 5 (puedes cambiarlo)
+            default: return new List<int>();
+        }
+    }
+
+    void CheckAnswer(int index)
+    {
+        if (hasAnswered)
+            return;
+
+        hasAnswered = true;
+        Debug.Log("Clic en: " + currentOptions[index]);
+        for (int i = 0; i < 5; i++)
+        {
+            Transform answerButton = answerContainer.transform.GetChild(i);
+            TextMeshProUGUI tmp = answerButton.GetComponentInChildren<TextMeshProUGUI>();
+            Image img = answerButton.GetComponent<Image>();
+
+            if (i == index)
+            {
+                if (tmp.text == correctAnswer)
+                {
+                    originalSize = tmp.fontSize;
+                    tmp.color = Color.green; // Correcto
+                    tmp.fontStyle = FontStyles.Bold;
+                    tmp.fontSize += 0.1f;
+                }
+                else
+                {
+                    tmp.color = Color.red; // Incorrecto
+                }
+            }
+            else if (tmp.text == correctAnswer)
+            {
+                originalSize = tmp.fontSize;
+                tmp.color = Color.gray; // Mostrar cuál era la correcta
+                tmp.fontStyle = FontStyles.Bold;
+                tmp.fontSize += 0.1f;
+
+                gameManager.life--;
+                
+            }
+        }
+        //HUDManager.Instance.UpdateLifeDisplay();
+        repeatCount++;
+        Debug.Log("Nivel Actual: " + tutorialRound + ". Ronda Actual: " + repeatCount);
+
+        if (repeatCount > 5)
+        {
+            // Hemos llegado al límite, pasamos al siguiente round
+            tutorialRound++;
+            repeatCount = 0;
+
+            // Opcional: límite máximo
+            if (tutorialRound > 13)
+            {
+                tutorialRound = 13; // O lo que prefieras
+            }
+        }
+
+        StartCoroutine(ProceedToNextQuestion());
+    }
+
+    void ResetAnswerColors()
+    {
+        for (int i = 0; i < answerContainer.transform.childCount; i++)
+        {
+            Transform answerButton = answerContainer.transform.GetChild(i);
+            TextMeshProUGUI tmp = answerButton.GetComponentInChildren<TextMeshProUGUI>();
+            tmp.color = Color.black; // o el color que uses normalmente
+            tmp.fontStyle = FontStyles.Normal;
+            tmp.fontSize = originalSize;
+        }
+    }
+
+    IEnumerator ProceedToNextQuestion()
+    {
+        // Opcional: espera un segundo
+        yield return new WaitForSeconds(0.5f);
+
+
+        ResetAnswerColors();
+
+
+        // Generar la siguiente pregunta
+        hasStarted = false;
+
+    }
+
 }
 
 
