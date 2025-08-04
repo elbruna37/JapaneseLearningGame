@@ -1,0 +1,533 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<charType>	
+	<hiragana>
+		<id cod="0">
+			<strokes>3</strokes>
+			<letter>ka</letter>
+		</id>
+		<id cod="1">
+			<strokes>3</strokes>
+			<letter>ke</letter>
+		</id>
+		<id cod="2">
+			<strokes>4</strokes>
+			<letter>ki</letter>
+		</id>
+		<id cod="3">
+			<strokes>2</strokes>
+			<letter>ko</letter>
+		</id>
+		<id cod="4">
+			<strokes>1</strokes>
+			<letter>ku</letter>
+		</id>
+		<id cod="5">
+			<strokes>3</strokes>
+			<letter>sa</letter>
+		</id>
+		<id cod="6">
+			<strokes>3</strokes>
+			<letter>se</letter>
+		</id>
+		<id cod="7">
+			<strokes>1</strokes>
+			<letter>shi</letter>
+		</id>
+		<id cod="8">
+			<strokes>3</strokes>
+			<letter>so</letter>
+		</id>
+		<id cod="9">
+			<strokes>3</strokes>
+			<letter>su</letter>
+		</id>
+		<id cod="10">
+			<strokes>4</strokes>
+			<letter>ta</letter>
+		</id>
+		<id cod="11">
+			<strokes>2</strokes>
+			<letter>te</letter>
+		</id>
+		<id cod="12">
+			<strokes>3</strokes>
+			<letter>chi</letter>
+		</id>
+		<id cod="13">
+			<strokes>2</strokes>
+			<letter>to</letter>
+		</id>
+		<id cod="14">
+			<strokes>1</strokes>
+			<letter>tsu</letter>
+		</id>
+		<id cod="15">
+			<strokes>4</strokes>
+			<letter>ha</letter>
+		</id>
+		<id cod="16">
+			<strokes>1</strokes>
+			<letter>he</letter>
+		</id>
+		<id cod="17">
+			<strokes>3</strokes>
+			<letter>hi</letter>
+		</id>
+		<id cod="18">
+			<strokes>4</strokes>
+			<letter>ho</letter>
+		</id>
+		<id cod="19">
+			<strokes>4</strokes>
+			<letter>fu</letter>
+		</id>
+		<id cod="20">
+			<strokes>4</strokes>
+			<letter>na</letter>
+		</id>
+		<id cod="21">
+			<strokes>4</strokes>
+			<letter>ne</letter>
+		</id>
+		<id cod="22">
+			<strokes>3</strokes>
+			<letter>ni</letter>
+		</id>
+		<id cod="23">
+			<strokes>2</strokes>
+			<letter>no</letter>
+		</id>
+		<id cod="24">
+			<strokes>3</strokes>
+			<letter>nu</letter>
+		</id>
+		<id cod="25">
+			<strokes>4</strokes>
+			<letter>ma</letter>
+		</id>
+		<id cod="26">
+			<strokes>2</strokes>
+			<letter>me</letter>
+		</id>
+		<id cod="27">
+			<strokes>3</strokes>
+			<letter>mi</letter>
+		</id>
+		<id cod="28">
+			<strokes>3</strokes>
+			<letter>mo</letter>
+		</id>
+		<id cod="29">
+			<strokes>4</strokes>
+			<letter>mu</letter>
+		</id>
+		<id cod="30">
+			<strokes>2</strokes>
+			<letter>ra</letter>
+		</id>
+		<id cod="31">
+			<strokes>3</strokes>
+			<letter>re</letter>
+		</id>
+		<id cod="32">
+			<strokes>2</strokes>
+			<letter>ri</letter>
+		</id>
+		<id cod="33">
+			<strokes>2</strokes>
+			<letter>ro</letter>
+		</id>
+		<id cod="34">
+			<strokes>3</strokes>
+			<letter>ru</letter>
+		</id>
+		
+		<!--From 35 to 59 are repeated strokes, it is fixed in script adding the apostrophe -->
+		
+		<id cod="35">
+			<letter>ga</letter>
+		</id>
+		<id cod="36">
+			<letter>ge</letter>
+		</id>
+		<id cod="37">
+			<letter>gi</letter>
+		</id>
+		<id cod="38">
+			<letter>go</letter>
+		</id>
+		<id cod="39">
+			<letter>gu</letter>
+		</id>
+		<id cod="40">
+			<letter>za</letter>
+		</id>
+		<id cod="41">
+			<letter>ze</letter>
+		</id>
+		<id cod="42">
+			<letter>dzi</letter>
+		</id>
+		<id cod="43">
+			<letter>zo</letter>
+		</id>
+		<id cod="44">
+			<letter>zu</letter>
+		</id>
+		<id cod="45">
+			<letter>da</letter>
+		</id>
+		<id cod="46">
+			<letter>de</letter>
+		</id>
+		<id cod="47">
+			<letter>ji</letter>
+		</id>
+		<id cod="48">
+			<letter>do</letter>
+		</id>
+		<id cod="49">
+			<letter>dzu</letter>
+		</id>
+		<id cod="50">
+			<letter>ba</letter>
+		</id>
+		<id cod="51">
+			<letter>be</letter>
+		</id>
+		<id cod="52">
+			<letter>bi</letter>
+		</id>
+		<id cod="53">
+			<letter>bo</letter>
+		</id>
+		<id cod="54">
+			<letter>bu</letter>
+		</id>
+		<id cod="55">
+			<letter>pa</letter>
+		</id>
+		<id cod="56">
+			<letter>pe</letter>
+		</id>
+		<id cod="57">
+			<letter>pi</letter>
+		</id>
+		<id cod="58">
+			<letter>po</letter>
+		</id>
+		<id cod="59">
+			<letter>pu</letter>
+		</id>
+		
+		<id cod="60">
+			<strokes>3</strokes>
+			<letter>wa</letter>
+		</id>
+		<id cod="61">
+			<strokes>3</strokes>
+			<letter>wo</letter>
+		</id>
+		<id cod="62">
+			<strokes>2</strokes>
+			<letter>n</letter>
+		</id>
+		<id cod="63">
+			<strokes>3</strokes>
+			<letter>ya</letter>
+		</id>
+		<id cod="64">
+			<strokes>3</strokes>
+			<letter>yo</letter>
+		</id>
+		<id cod="65">
+			<strokes>3</strokes>
+			<letter>yu</letter>
+		</id>
+
+		<id cod="66">
+			<strokes>4</strokes>
+			<letter>a</letter>
+		</id>
+		<id cod="67">
+			<strokes>3</strokes>
+			<letter>e</letter>
+		</id>
+		<id cod="68">
+			<strokes>2</strokes>
+			<letter>i</letter>
+		</id>
+		<id cod="69">
+			<strokes>4</strokes>
+			<letter>o</letter>
+		</id>
+		<id cod="70">
+			<strokes>2</strokes>
+			<letter>u</letter>
+		</id>
+	</hiragana>
+	<katakana>
+		<id cod="0">
+			<strokes>2</strokes>
+			<letter>ka</letter>
+		</id>
+		<id cod="1">
+			<strokes>3</strokes>
+			<letter>ke</letter>
+		</id>
+		<id cod="2">
+			<strokes>3</strokes>
+			<letter>ki</letter>
+		</id>
+		<id cod="3">
+			<strokes>2</strokes>
+			<letter>ko</letter>
+		</id>
+		<id cod="4">
+			<strokes>2</strokes>
+			<letter>ku</letter>
+		</id>
+		<id cod="5">
+			<strokes>3</strokes>
+			<letter>sa</letter>
+		</id>
+		<id cod="6">
+			<strokes>2</strokes>
+			<letter>se</letter>
+		</id>
+		<id cod="7">
+			<strokes>3</strokes>
+			<letter>shi</letter>
+		</id>
+		<id cod="8">
+			<strokes>2</strokes>
+			<letter>so</letter>
+		</id>
+		<id cod="9">
+			<strokes>2</strokes>
+			<letter>su</letter>
+		</id>
+		<id cod="10">
+			<strokes>3</strokes>
+			<letter>ta</letter>
+		</id>
+		<id cod="11">
+			<strokes>3</strokes>
+			<letter>te</letter>
+		</id>
+		<id cod="12">
+			<strokes>3</strokes>
+			<letter>chi</letter>
+		</id>
+		<id cod="13">
+			<strokes>2</strokes>
+			<letter>to</letter>
+		</id>
+		<id cod="14">
+			<strokes>3</strokes>
+			<letter>tsu</letter>
+		</id>
+		<id cod="15">
+			<strokes>2</strokes>
+			<letter>ha</letter>
+		</id>
+		<id cod="16">
+			<strokes>1</strokes>
+			<letter>he</letter>
+		</id>
+		<id cod="17">
+			<strokes>2</strokes>
+			<letter>hi</letter>
+		</id>
+		<id cod="18">
+			<strokes>4</strokes>
+			<letter>ho</letter>
+		</id>
+		<id cod="19">
+			<strokes>2</strokes>
+			<letter>fu</letter>
+		</id>
+		<id cod="20">
+			<strokes>2</strokes>
+			<letter>na</letter>
+		</id>
+		<id cod="21">
+			<strokes>4</strokes>
+			<letter>ne</letter>
+		</id>
+		<id cod="22">
+			<strokes>2</strokes>
+			<letter>ni</letter>
+		</id>
+		<id cod="23">
+			<strokes>1</strokes>
+			<letter>no</letter>
+		</id>
+		<id cod="24">
+			<strokes>3</strokes>
+			<letter>nu</letter>
+		</id>
+		<id cod="25">
+			<strokes>2</strokes>
+			<letter>ma</letter>
+		</id>
+		<id cod="26">
+			<strokes>2</strokes>
+			<letter>me</letter>
+		</id>
+		<id cod="27">
+			<strokes>3</strokes>
+			<letter>mi</letter>
+		</id>
+		<id cod="28">
+			<strokes>3</strokes>
+			<letter>mo</letter>
+		</id>
+		<id cod="29">
+			<strokes>3</strokes>
+			<letter>mu</letter>
+		</id>
+		<id cod="30">
+			<strokes>2</strokes>
+			<letter>ra</letter>
+		</id>
+		<id cod="31">
+			<strokes>2</strokes>
+			<letter>re</letter>
+		</id>
+		<id cod="32">
+			<strokes>2</strokes>
+			<letter>ri</letter>
+		</id>
+		<id cod="33">
+			<strokes>3</strokes>
+			<letter>ro</letter>
+		</id>
+		<id cod="34">
+			<strokes>2</strokes>
+			<letter>ru</letter>
+		</id>
+		
+		<!--From 35 to 59 are repeated strokes, it is fixed in script adding the apostrophe -->
+		
+		<id cod="35">
+			<letter>ga</letter>
+		</id>
+		<id cod="36">
+			<letter>ge</letter>
+		</id>
+		<id cod="37">
+			<letter>gi</letter>
+		</id>
+		<id cod="38">
+			<letter>go</letter>
+		</id>
+		<id cod="39">
+			<letter>gu</letter>
+		</id>
+		<id cod="40">
+			<letter>za</letter>
+		</id>
+		<id cod="41">
+			<letter>ze</letter>
+		</id>
+		<id cod="42">
+			<letter>dzi</letter>
+		</id>
+		<id cod="43">
+			<letter>zo</letter>
+		</id>
+		<id cod="44">
+			<letter>zu</letter>
+		</id>
+		<id cod="45">
+			<letter>da</letter>
+		</id>
+		<id cod="46">
+			<letter>de</letter>
+		</id>
+		<id cod="47">
+			<letter>ji</letter>
+		</id>
+		<id cod="48">
+			<letter>do</letter>
+		</id>
+		<id cod="49">
+			<letter>dzu</letter>
+		</id>
+		<id cod="50">
+			<letter>ba</letter>
+		</id>
+		<id cod="51">
+			<letter>be</letter>
+		</id>
+		<id cod="52">
+			<letter>bi</letter>
+		</id>
+		<id cod="53">
+			<letter>bo</letter>
+		</id>
+		<id cod="54">
+			<letter>bu</letter>
+		</id>
+		<id cod="55">
+			<letter>pa</letter>
+		</id>
+		<id cod="56">
+			<letter>pe</letter>
+		</id>
+		<id cod="57">
+			<letter>pi</letter>
+		</id>
+		<id cod="58">
+			<letter>po</letter>
+		</id>
+		<id cod="59">
+			<letter>pu</letter>
+		</id>
+		<id cod="60">
+			<strokes>2</strokes>
+			<letter>wa</letter>
+		</id>
+		<id cod="61">
+			<strokes>3</strokes>
+			<letter>wo</letter>
+		</id>
+		<id cod="62">
+			<strokes>2</strokes>
+			<letter>n</letter>
+		</id>
+		<id cod="63">
+			<strokes>2</strokes>
+			<letter>ya</letter>
+		</id>
+		<id cod="64">
+			<strokes>3</strokes>
+			<letter>yo</letter>
+		</id>
+		<id cod="65">
+			<strokes>2</strokes>
+			<letter>yu</letter>
+		</id>
+		<id cod="66">
+			<strokes>2</strokes>
+			<letter>a</letter>
+		</id>
+		<id cod="67">
+			<strokes>3</strokes>
+			<letter>e</letter>
+		</id>
+		<id cod="68">
+			<strokes>2</strokes>
+			<letter>i</letter>
+		</id>
+		<id cod="69">
+			<strokes>3</strokes>
+			<letter>o</letter>
+		</id>
+		<id cod="70">
+			<strokes>3</strokes>
+			<letter>u</letter>
+		</id>
+	</katakana>
+</charType>
