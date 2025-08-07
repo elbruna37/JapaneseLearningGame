@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class AnimatorController : MonoBehaviour
@@ -15,13 +16,17 @@ public class AnimatorController : MonoBehaviour
         "Page_005|pasar_varias", "Page_006|pasar_varias", "Page_007|pasar_varias",
         "Page_008|pasar_varias", "Page_009|pasar_varias", "Page_010|pasar_varias",
         "Page_011|pasar_varias", "Page_012|pasar_varias", "Page_013|pasar_varias",
-        "Page_014|pasar_varias", "Page_015|pasar_varias", "Page_016|pasar_varias"
+        "Page_014|pasar_varias", "Page_015|pasar_varias", "Page_016|ultima_pagina"
     };
 
     //BOOK ANIMATOR
     public bool abrir_libro = false;
     //PAGE ANIMATOR
     public bool pasar_varias = false;
+    
+    public static bool pasar_variasReverse = false;
+    public static bool isAnimationFinished = false;
+
     public bool pasar_pagina = false;
     public bool ultima_pagina = false;
     public bool next_round = false;
@@ -43,8 +48,6 @@ public class AnimatorController : MonoBehaviour
         PageAnimator.SetBool("ultima_pagina", ultima_pagina);
         PageAnimator.SetBool("next_round", next_round);
 
-        OpenBookActivator();
-
         TurnPagesActivator();
     }
 
@@ -65,18 +68,24 @@ public class AnimatorController : MonoBehaviour
         }
     }
 
-    IEnumerator WaitOpenBook()
+    public IEnumerator RevertirAnimacionesEnTiempo()
     {
-        yield return new WaitForSeconds(2f);
-        pasar_pagina = true;
-    }
+        isAnimationFinished = false;
 
-    void OpenBookActivator()
-    {
-       if (abrir_libro)
+        float tiempoInicial = Time.time;
+
+        for (int i = estados.Length - 1; i >= 0; i--)
         {
-            StartCoroutine(WaitOpenBook());
+            int capa = i + 1;
+            float tiempoObjetivo = tiempoInicial + ((estados.Length - 1 - i) * 0.1f);
+
+            while (Time.time < tiempoObjetivo)
+                yield return null;
+
+            PageAnimator.Play(estados[i] + " reverse", capa);
         }
+
+        isAnimationFinished = true;
     }
 
     void TurnPagesActivator()
@@ -86,6 +95,13 @@ public class AnimatorController : MonoBehaviour
             pasar_varias = false;
             StartCoroutine(LanzarAnimacionesEnTiempo());
         }
+
+        /*if (GameManager.Instance.isGameOver && !pasar_variasReverse)
+        {
+            pasar_variasReverse = true;
+            Debug.Log("Inciando pasado de paginas invertido");
+            StartCoroutine(RevertirAnimacionesEnTiempo());
+        }*/
     }
     public void SetAnimatorBool(string parameterName, bool value)
     {

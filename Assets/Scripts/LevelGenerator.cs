@@ -13,10 +13,8 @@ using UnityEngine.UI;
 
 public class LevelGenerator : MonoBehaviour
 {
-    public GameManager gameManager;
 
     XElement xmlDoc;
-    //bool finishedXMLLoading = false;
 
     public Image stroke0;
     public Image stroke1;
@@ -65,11 +63,24 @@ public class LevelGenerator : MonoBehaviour
     
     void Update()
     {
-        if (canPaint && !hasStarted)
+        if (canPaint)
         {
-            hasStarted = true;
+            canPaint = false;
             TutorialHiraganaRandom();
             UpdateAnswersUI();
+        }
+        //else { answerContainer.SetActive(false); }
+
+        if (GameManager.Instance.isGameOver && canPaint)
+        {
+            canPaint = false;
+            StopCoroutine(ImageLoads(stringHiraganaRandom, nStrokes, nletter));
+            stroke0.fillAmount = 0;
+            stroke1.fillAmount = 0;
+            stroke2.fillAmount = 0;
+            stroke3.fillAmount = 0;
+            apostrophe.fillAmount = 0;
+            circle.fillAmount = 0;
         }
     }
     void XMLloader()
@@ -276,13 +287,11 @@ public class LevelGenerator : MonoBehaviour
         }
     }
 
-
-
-
     void UpdateAnswersUI()
     {
         currentOptions.Clear();
         hasAnswered = false;
+        answerContainer.SetActive(true);
 
         // Obtener índices válidos para este tutorialRound
         List<int> validIndices = GetValidIndicesForRound(tutorialRound);
@@ -332,7 +341,7 @@ public class LevelGenerator : MonoBehaviour
         switch (round)
         {
             case 0: return new List<int> { 66, 67, 68, 69, 70 }; // a, e ,i , o , u
-            case 1: return new List<int> { 0, 2, 1, 4, 3 };       // か, き, く, け, こ
+            case 1: return new List<int> { 0, 1, 2, 3, 4 };       // か, き, く, け, こ
             case 2: return new List<int> { 0, 1, 2, 3, 4 };       // ka-group sin dakuten
             case 3: return new List<int> { 5, 6, 7, 8, 9 };       // さ-group
             case 4: return new List<int> { 5, 6, 7, 8, 9 };       // さ, し, す, せ, そ
@@ -374,6 +383,10 @@ public class LevelGenerator : MonoBehaviour
                 else
                 {
                     tmp.color = Color.red; // Incorrecto
+
+                    GameManager.Instance.life--;
+                    HUDManager.Instance.UpdateLifeDisplay();
+                    
                 }
             }
             else if (tmp.text == correctAnswer)
@@ -381,13 +394,9 @@ public class LevelGenerator : MonoBehaviour
                 originalSize = tmp.fontSize;
                 tmp.color = Color.gray; // Mostrar cuál era la correcta
                 tmp.fontStyle = FontStyles.Bold;
-                tmp.fontSize += 0.1f;
-
-                gameManager.life--;
-                
+                tmp.fontSize += 0.1f; 
             }
         }
-        //HUDManager.Instance.UpdateLifeDisplay();
         repeatCount++;
         Debug.Log("Nivel Actual: " + tutorialRound + ". Ronda Actual: " + repeatCount);
 
@@ -427,9 +436,42 @@ public class LevelGenerator : MonoBehaviour
 
         ResetAnswerColors();
 
+        //Pone en 0 los fillAmount de los strokes
+        float startTime = Time.time;
+
+        float s0 = stroke0.fillAmount;
+        float s1 = stroke1.fillAmount;
+        float s2 = stroke2.fillAmount;
+        float s3 = stroke3.fillAmount;
+        float ap = apostrophe.fillAmount;
+        float ci = circle.fillAmount;
+
+        //HAY QUE AÑADIR QUE CAMBIE EL FILL METHOD DE IZQUIERDA A DERECHA  // stroke0.type = Image.Type.Filled;  stroke0.fillMethod = Image.FillMethod.Horizontal; stroke0.fillOrigin = 0;
+
+        while (Time.time - startTime < 0.2f)
+        {
+            float t = (Time.time - startTime) / 0.2f;
+
+            stroke0.fillAmount = Mathf.Lerp(s0, 0f, t);
+            stroke1.fillAmount = Mathf.Lerp(s1, 0f, t);
+            stroke2.fillAmount = Mathf.Lerp(s2, 0f, t);
+            stroke3.fillAmount = Mathf.Lerp(s3, 0f, t);
+            apostrophe.fillAmount = Mathf.Lerp(ap, 0f, t);
+            circle.fillAmount = Mathf.Lerp(ci, 0f, t);
+
+            yield return null;
+        }
+
+        stroke0.fillAmount = 0f;
+        stroke1.fillAmount = 0f;
+        stroke2.fillAmount = 0f;
+        stroke3.fillAmount = 0f;
+        apostrophe.fillAmount = 0f;
+        circle.fillAmount = 0f;
+
 
         // Generar la siguiente pregunta
-        hasStarted = false;
+        canPaint = true;
 
     }
 

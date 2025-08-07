@@ -10,7 +10,12 @@ public class GameManager : MonoBehaviour
     bool pagesPass = false;
     bool hasStarted = false;
 
+    public bool isGameOver = true;
+
     public int life = 10;
+
+    //bools de control
+    public bool menuIsReady;
 
 
     void Awake()
@@ -24,16 +29,29 @@ public class GameManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+        Application.targetFrameRate = 60;
+
+        life = 10;
     }
 
     private void Update()
     {
-        pagesPass = AnimatorController.Instance.GetAnimatorBool("pasar_varias");
+        if (AnimatorController.Instance != null)
+        {
+            pagesPass = AnimatorController.Instance.GetAnimatorBool("pasar_varias");
+        }
 
-        if (pagesPass && !hasStarted)
+
+        if (!isGameOver && !hasStarted)
         {
             hasStarted = true;
             StartCoroutine(WaitToPaint());
+        }
+
+        if (life <= 0)
+        {
+            isGameOver = true;
         }
     }
     public void LoadNextScene()
@@ -50,6 +68,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         AnimatorController.Instance.SetAnimatorBool("abrir_libro", true);
+
+        yield return new WaitForSeconds(2f);
+
+        AnimatorController.Instance.SetAnimatorBool("pasar_pagina", true);
+
+        menuIsReady = true;
     }
 
     IEnumerator WaitToPaint()
