@@ -39,9 +39,6 @@ public class LevelGenerator : MonoBehaviour
     bool needCircle = false;
     //bool isPaintFinish = true;
 
-    public static bool canPaint = false;
-    bool hasStarted = false;
-
     int tutorialRound = 0;
     int repeatCount = 0;
 
@@ -63,25 +60,32 @@ public class LevelGenerator : MonoBehaviour
     
     void Update()
     {
-        if (canPaint)
-        {
-            canPaint = false;
+        if (GameManager.Instance.canPaint)
+        { 
+            answerContainer.SetActive(true);
             TutorialHiraganaRandom();
             UpdateAnswersUI();
+            GameManager.Instance.canPaint = false;
         }
-        //else { answerContainer.SetActive(false); }
 
-        if (GameManager.Instance.isGameOver && canPaint)
+        if (GameManager.Instance.isGameOver && !GameManager.Instance.isInMenu)
         {
-            canPaint = false;
-            StopCoroutine(ImageLoads(stringHiraganaRandom, nStrokes, nletter));
+            StopAllCoroutines();
+
             stroke0.fillAmount = 0;
             stroke1.fillAmount = 0;
             stroke2.fillAmount = 0;
             stroke3.fillAmount = 0;
             apostrophe.fillAmount = 0;
             circle.fillAmount = 0;
+
+            answerContainer.SetActive(false);
+
+            ResetLevelState();
+
+            GameManager.Instance.isInMenu = true;
         }
+
     }
     void XMLloader()
     {
@@ -291,7 +295,6 @@ public class LevelGenerator : MonoBehaviour
     {
         currentOptions.Clear();
         hasAnswered = false;
-        answerContainer.SetActive(true);
 
         // Obtener índices válidos para este tutorialRound
         List<int> validIndices = GetValidIndicesForRound(tutorialRound);
@@ -471,8 +474,21 @@ public class LevelGenerator : MonoBehaviour
 
 
         // Generar la siguiente pregunta
-        canPaint = true;
+        GameManager.Instance.canPaint = true;
 
+    }
+
+    void ResetLevelState()
+    {
+        currentOptions.Clear();
+        correctAnswer = "";
+        hasAnswered = false;
+        tutorialRound = 0;
+        repeatCount = 0;
+        needApostrophe = false;
+        needCircle = false;
+
+        ResetAnswerColors(); // ← Restablece visualmente
     }
 
 }

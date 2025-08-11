@@ -70,7 +70,6 @@ public class AnimatorController : MonoBehaviour
 
     public IEnumerator RevertirAnimacionesEnTiempo()
     {
-        isAnimationFinished = false;
 
         float tiempoInicial = Time.time;
 
@@ -85,7 +84,8 @@ public class AnimatorController : MonoBehaviour
             PageAnimator.Play(estados[i] + " reverse", capa);
         }
 
-        isAnimationFinished = true;
+        GameManager.Instance.menuIsReady = true;
+  
     }
 
     void TurnPagesActivator()
@@ -96,12 +96,12 @@ public class AnimatorController : MonoBehaviour
             StartCoroutine(LanzarAnimacionesEnTiempo());
         }
 
-        /*if (GameManager.Instance.isGameOver && !pasar_variasReverse)
+        if (GameManager.Instance.backToMenu)
         {
-            pasar_variasReverse = true;
+            GameManager.Instance.backToMenu = false;
             Debug.Log("Inciando pasado de paginas invertido");
             StartCoroutine(RevertirAnimacionesEnTiempo());
-        }*/
+        }
     }
     public void SetAnimatorBool(string parameterName, bool value)
     {

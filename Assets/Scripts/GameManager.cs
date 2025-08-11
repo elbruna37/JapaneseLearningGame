@@ -11,6 +11,9 @@ public class GameManager : MonoBehaviour
     bool hasStarted = false;
 
     public bool isGameOver = true;
+    public bool backToMenu = false;
+    public bool isInMenu = true;
+    public bool canPaint = false;
 
     public int life = 10;
 
@@ -52,6 +55,9 @@ public class GameManager : MonoBehaviour
         if (life <= 0)
         {
             isGameOver = true;
+            hasStarted = false;
+            backToMenu = true;
+            life = 10;
         }
     }
     public void LoadNextScene()
@@ -80,6 +86,6 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        LevelGenerator.canPaint = true;
+        canPaint = true;
     }
 }

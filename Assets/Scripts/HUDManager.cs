@@ -19,12 +19,7 @@ public class HUDManager : MonoBehaviour
     public RectMask2D [] masksStartMenu;
  
 
-    private Vector4 originalPadding = new Vector4(0, 0, 1.1f, 0);
-
-    bool pasar_pagina;
-    bool pasar_varias;
-    //bool hasWrited = false;
-    bool readyMenu = false;
+    private Vector4 originalPadding = new Vector4(0, 0, 1.3f, 0);
 
     public GameObject Turorial;
     public GameObject MainMenu;
@@ -37,22 +32,20 @@ public class HUDManager : MonoBehaviour
 
     void Update()
     {
-        pasar_pagina = AnimatorController.Instance.GetAnimatorBool("pasar_pagina");
-        pasar_varias = AnimatorController.Instance.GetAnimatorBool("pasar_varias");
 
         if (GameManager.Instance.menuIsReady)
         {
             GameManager.Instance.menuIsReady = false;
-            StartCoroutine(StartStaggeredMaskAnimation(masksMainMenu, 2f, 0.5f, 1f));
+
+            StartCoroutine(StartStaggeredMaskAnimation(masksMainMenu, 2f, 0.5f, 1f, false));
         }
 
-        if (LevelGenerator.canPaint)
+        if (GameManager.Instance.canPaint)
         {
             LifeHUD.SetActive(true);
+            UpdateLifeDisplay();
         }
-        //else { LifeHUD.SetActive(false); }
-
-        if (AnimatorController.isAnimationFinished) { MainMenu.SetActive(true); Turorial.SetActive(true); }
+        else if (GameManager.Instance.isGameOver) { LifeHUD.SetActive(false); }
             
     }
 
@@ -64,28 +57,34 @@ public class HUDManager : MonoBehaviour
         }
     }
 
-    IEnumerator StartStaggeredMaskAnimation(RectMask2D[] masks,float delayBeforeStart, float delayBetweenEach, float animationDuration)
+    IEnumerator StartStaggeredMaskAnimation(RectMask2D[] masks,float delayBeforeStart, float delayBetweenEach, float animationDuration, bool reverse)  // reverse = false ---- open    reverse = true --------- close
     {
-        yield return new WaitForSeconds(delayBeforeStart);
+        if (!reverse) { Debug.Log("Comenzando aparicion menu"); } else { Debug.Log("Comenzando desaparicion menu"); }
+
+            yield return new WaitForSeconds(delayBeforeStart);
 
         for (int i = 0; i < masks.Length; i++)
         {
             float delay = i * delayBetweenEach;
-            StartCoroutine(AnimateMaskPadding(masks[i], delay, animationDuration));
+            StartCoroutine(AnimateMaskPadding(masks[i], delay, animationDuration, reverse));
         }
     }
 
-    IEnumerator AnimateMaskPadding(RectMask2D mask, float delay, float duration)
+    IEnumerator AnimateMaskPadding(RectMask2D mask, float delay, float duration, bool reverse)
     {
         yield return new WaitForSeconds(delay);
 
         float tiempoInicio = Time.time;
-        Vector4 paddingFinal = new Vector4(originalPadding.x, originalPadding.y, 0f, originalPadding.w);
+
+        float startValue = reverse ? 0f : originalPadding.z;
+        float endValue = reverse ? originalPadding.z : 0f;
+
+        Vector4 paddingFinal = new Vector4(originalPadding.x, originalPadding.y, endValue, originalPadding.w);
 
         while (Time.time - tiempoInicio < duration)
         {
             float progreso = (Time.time - tiempoInicio) / duration;
-            float nuevoRight = Mathf.Lerp(originalPadding.z, 0f, progreso);
+            float nuevoRight = Mathf.Lerp(startValue, endValue, progreso);
 
             if (mask != null)
             {
@@ -103,16 +102,19 @@ public class HUDManager : MonoBehaviour
 
     public void StartPressed()
     {
-        StartCoroutine(StartStaggeredMaskAnimation(masksStartMenu, 0.5f, 0.5f, 1f));
+        StartCoroutine(StartStaggeredMaskAnimation(masksStartMenu, 0.5f, 0.5f, 1f, false));
     }
 
     public void StartTutorial()
     {
+        StartCoroutine(StartStaggeredMaskAnimation(masksMainMenu,0.5f,0.5f,0.5f, true));
+        StartCoroutine(StartStaggeredMaskAnimation(masksStartMenu, 0.5f, 0.5f, 0.5f, true));
+
         GameManager.Instance.isGameOver = false;
+        GameManager.Instance.isInMenu = false;
         GameManager.Instance.life = 10;
 
-        Turorial.SetActive(false);
-        MainMenu.SetActive(false);
+
         AnimatorController.Instance.SetAnimatorBool("pasar_varias", true);
     }
 }
