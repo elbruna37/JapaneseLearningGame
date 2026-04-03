@@ -10,17 +10,18 @@ public class HUDManager : MonoBehaviour
 {
     public static HUDManager Instance;
 
+    public GameObject canvasMenu;
+    public GameObject canvasTutorial;
+    public GameObject canvasLife;
+    public GameObject canvasLevelSelector;
+
     public GameObject LifeHUD;
     [SerializeField] private TextMeshProUGUI lifeText;
 
     public RectMask2D [] masksMainMenu;
     public RectMask2D [] masksStartMenu;
  
-
     private Vector4 originalPadding = new Vector4(0, 0, 1.3f, 0);
-
-    public GameObject Turorial;
-    public GameObject MainMenu;
 
     private void Awake()
     {
@@ -100,6 +101,11 @@ public class HUDManager : MonoBehaviour
         GameManager.Instance.isInMenu = false;
         GameManager.Instance.life = 10;
 
-        AnimatorController.Instance.SetAnimatorBool("pasar_varias", true);
+        AnimatorController.Instance.PasarVariasPaginas(() =>
+        {
+            Debug.Log("Animación terminada");
+            canvasMenu.SetActive(false);
+            canvasTutorial.SetActive(true);
+        });
     }
 }

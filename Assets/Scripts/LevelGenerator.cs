@@ -91,7 +91,6 @@ public class LevelGenerator : MonoBehaviour
     {
 
         xmlDoc = XElement.Load($"Assets/Resources/XML Files/charList.xml");
-
     }
 
     //Generates a random number and checks if the corresponding hiragana needs an apostrophe or circle

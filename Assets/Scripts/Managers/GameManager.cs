@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    bool pagesPass = false;
     bool hasStarted = false;
 
     public bool isGameOver = true;
@@ -40,11 +39,6 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (AnimatorController.Instance != null)
-        {
-            pagesPass = AnimatorController.Instance.GetAnimatorBool("pasar_varias");
-        }
-
 
         if (!isGameOver && !hasStarted)
         {
@@ -73,11 +67,11 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1.5f);
 
-        AnimatorController.Instance.SetAnimatorBool("abrir_libro", true);
+        AnimatorController.Instance.AbrirLibro(true);
 
         yield return new WaitForSeconds(2f);
 
-        AnimatorController.Instance.SetAnimatorBool("pasar_pagina", true);
+        AnimatorController.Instance.PasarPagina();
 
         menuIsReady = true;
     }
