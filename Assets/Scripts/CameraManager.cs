@@ -1,5 +1,5 @@
-using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraManager : MonoBehaviour
 {
@@ -9,92 +9,99 @@ public class CameraManager : MonoBehaviour
     private bool isGameActive = false;
     private bool hasReachedDestination = false;
 
-    public float time;
-    public float speed;
-    public float speedRotation;
-
-    private Vector3 cameraPosition;
-    private Quaternion cameraRotation;
+    public float blinkTime = 0.5f;
+    public float moveDuration = 3f;
+    public float delayBeforeScene = 0f;
 
     private Vector3 endPosition = new Vector3(-2, 4.88f, -6.47f);
-    private Quaternion endRotation = Quaternion.Euler(60.369f, 0, 0); // Más legible que usar valores directos
+    private Quaternion endRotation = Quaternion.Euler(60.369f, 0, 0);
 
-    // Referencia al GameManager
     private GameManager gameManager;
 
     void Start()
     {
-        // Buscar el GameManager en la escena
         gameManager = FindObjectOfType<GameManager>();
-        if (gameManager == null)
-        {
-            Debug.LogError("No se encontró el GameManager en la escena");
-        }
 
-        StartCoroutine(BlinkingText());
+        if (gameManager == null)
+            Debug.LogError("No se encontró el GameManager en la escena");
+
+        StartBlinking();
     }
 
     void Update()
     {
-        cameraPosition = mainCamera.transform.position;
-        cameraRotation = mainCamera.transform.rotation;
-
         if (Input.anyKey && !isGameActive)
         {
-            Debug.Log("Pressed any Key");
             isGameActive = true;
-        }
-
-        CameraMotion();
-    }
-
-    IEnumerator BlinkingText()
-    {
-        while (!isGameActive)
-        {
             pressAnyKey.SetActive(false);
-            yield return new WaitForSeconds(time);
-            pressAnyKey.SetActive(true);
-            yield return new WaitForSeconds(time);
+
+            StartCameraMotion();
         }
-        pressAnyKey.SetActive(false);
     }
 
-    void CameraMotion()
+    void StartBlinking()
     {
-        if (isGameActive && !hasReachedDestination)
+        pressAnyKey.SetActive(true);
+
+        CanvasGroup cg = pressAnyKey.GetComponent<CanvasGroup>();
+
+        if (cg == null)
+            cg = pressAnyKey.AddComponent<CanvasGroup>();
+
+        cg.alpha = 1.5f;
+
+        cg.DOFade(0f, blinkTime)
+          .SetLoops(-1, LoopType.Yoyo)
+          .SetEase(Ease.InOutSine);
+    }
+
+    void StartCameraMotion()
+    {
+        if (hasReachedDestination) return;
+
+        Transform cam = mainCamera.transform;
+
+        Vector3 startPos = cam.position;
+
+        Vector3 midPoint = (startPos + endPosition) / 2;
+        midPoint.y += 1.5f;
+
+        Vector3[] path = new Vector3[]
         {
-            // Movimiento de posición
-            mainCamera.transform.position = Vector3.MoveTowards(cameraPosition, endPosition, speed * Time.deltaTime);
+            startPos,
+            midPoint,
+            endPosition
+        };
 
-            // Rotación solo cuando llegue a la posición
-            if (Vector3.Distance(cameraPosition, endPosition) < 0.001f)
-            {
-                mainCamera.transform.rotation = Quaternion.RotateTowards(cameraRotation, endRotation, speedRotation * Time.deltaTime);
+        Sequence seq = DOTween.Sequence();
 
-                // Comprobar si ha completado la rotación
-                if (Quaternion.Angle(cameraRotation, endRotation) < 0.1f)
-                {
-                    hasReachedDestination = true;
-                    OnCameraReachedDestination();
-                }
-            }
-        }
+        seq.Append(
+            cam.DOPath(path, moveDuration, PathType.CatmullRom)
+               .SetEase(Ease.InOutSine)
+        );
+
+        seq.Join(
+            cam.DORotateQuaternion(endRotation, moveDuration)
+               .SetEase(Ease.InOutSine)
+        );
+
+        seq.OnComplete(() =>
+        {
+            hasReachedDestination = true;
+            OnCameraReachedDestination();
+        });
     }
 
     void OnCameraReachedDestination()
     {
         Debug.Log("Cámara ha llegado al destino");
+
         if (gameManager != null)
         {
-            // Iniciar una corrutina para esperar 1 segundo antes de cambiar de escena
-            StartCoroutine(DelayedSceneChange());
+            DOVirtual.DelayedCall(delayBeforeScene, () =>
+            {
+                gameManager.LoadNextScene();
+            });
         }
-    }
-
-    IEnumerator DelayedSceneChange()
-    {
-        yield return new WaitForSeconds(1f); // Esperar 1 segundo
-        gameManager.LoadNextScene();
     }
 }

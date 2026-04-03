@@ -345,13 +345,13 @@ public class LevelGenerator : MonoBehaviour
         {
             case 0: return new List<int> { 66, 67, 68, 69, 70 }; // a, e ,i , o , u
             case 1: return new List<int> { 0, 1, 2, 3, 4 };       // か, き, く, け, こ
-            case 2: return new List<int> { 0, 1, 2, 3, 4 };       // ka-group sin dakuten
+            case 2: return new List<int> { 0, 1, 2, 3, 4 , 35, 36, 37, 38, 39};       // ka-group sin dakuten
             case 3: return new List<int> { 5, 6, 7, 8, 9 };       // さ-group
-            case 4: return new List<int> { 5, 6, 7, 8, 9 };       // さ, し, す, せ, そ
+            case 4: return new List<int> { 5, 6, 7, 8, 9 , 40, 41, 42, 43, 44};       // さ, し, す, せ, そ
             case 5: return new List<int> { 10, 11, 12, 13, 14 };  // た-group
-            case 6: return new List<int> { 10, 11, 12, 13, 14 };  // た, ち, つ, て, と
+            case 6: return new List<int> { 10, 11, 12, 13, 14, 45, 46, 47, 48, 49};  // た, ち, つ, て, と
             case 7: return new List<int> { 15, 16, 17, 18, 19 };  // は-group
-            case 8: return new List<int> { 15, 16, 17, 18, 19 };  // は, ひ, ふ, へ, ほ
+            case 8: return new List<int> { 15, 16, 17, 18, 19, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59};  // は, ひ, ふ, へ, ほ
             case 9: return new List<int> { 20, 21, 22, 23, 24 };  // な-group
             case 10: return new List<int> { 25, 26, 27, 28, 29 }; // ま-group
             case 11: return new List<int> { 30, 31, 32, 33, 34 }; // ら-group
@@ -368,7 +368,10 @@ public class LevelGenerator : MonoBehaviour
 
         hasAnswered = true;
         Debug.Log("Clic en: " + currentOptions[index]);
-        for (int i = 0; i < 5; i++)
+
+        int optionCount = currentOptions.Count;
+
+        for (int i = 0; i < optionCount; i++)
         {
             Transform answerButton = answerContainer.transform.GetChild(i);
             TextMeshProUGUI tmp = answerButton.GetComponentInChildren<TextMeshProUGUI>();
@@ -421,6 +424,8 @@ public class LevelGenerator : MonoBehaviour
 
     void ResetAnswerColors()
     {
+        int optionCount = answerContainer.transform.childCount;
+
         for (int i = 0; i < answerContainer.transform.childCount; i++)
         {
             Transform answerButton = answerContainer.transform.GetChild(i);

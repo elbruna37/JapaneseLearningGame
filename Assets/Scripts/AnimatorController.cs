@@ -10,7 +10,6 @@ public class AnimatorController : MonoBehaviour
     Animator PageAnimator;
     Animator BookAnimator;
 
-
     private string[] estados = {
         "Page_002|pasar_varias", "Page_003|pasar_varias", "Page_004|pasar_varias",
         "Page_005|pasar_varias", "Page_006|pasar_varias", "Page_007|pasar_varias",
@@ -30,6 +29,8 @@ public class AnimatorController : MonoBehaviour
     public bool pasar_pagina = false;
     public bool ultima_pagina = false;
     public bool next_round = false;
+
+    public bool animationCompleted = false;
 
     private void Awake()
     {
@@ -51,7 +52,7 @@ public class AnimatorController : MonoBehaviour
         TurnPagesActivator();
     }
 
-    IEnumerator LanzarAnimacionesEnTiempo()
+    IEnumerator LunchAnimationsOnTime()
     {
         float tiempoInicial = Time.time;
 
@@ -66,9 +67,11 @@ public class AnimatorController : MonoBehaviour
 
             PageAnimator.Play(estados[i], capa);
         }
+
+        animationCompleted = true;
     }
 
-    public IEnumerator RevertirAnimacionesEnTiempo()
+    public IEnumerator ReverseAnimationsInTime()
     {
 
         float tiempoInicial = Time.time;
@@ -93,14 +96,14 @@ public class AnimatorController : MonoBehaviour
         if (pasar_varias)
         {
             pasar_varias = false;
-            StartCoroutine(LanzarAnimacionesEnTiempo());
+            StartCoroutine(LunchAnimationsOnTime());
         }
 
         if (GameManager.Instance.backToMenu)
         {
             GameManager.Instance.backToMenu = false;
             Debug.Log("Inciando pasado de paginas invertido");
-            StartCoroutine(RevertirAnimacionesEnTiempo());
+            StartCoroutine(ReverseAnimationsInTime());
         }
     }
     public void SetAnimatorBool(string parameterName, bool value)
